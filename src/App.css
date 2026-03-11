@@ -1,37 +1,52 @@
 .App {
   text-align: center;
-  font-family: Arial, sans-serif;
-  background-color: #f4f6f8;
+  font-family: 'Palatino Linotype', 'Book Antiqua', Palatino, serif;
+  background: linear-gradient(135deg, #faf7f2 0%, #f0ebe1 100%);
   min-height: 100vh;
   padding: 20px;
+  color: #1a1a2e;
 }
 
 /* Headings */
-h1, h2 {
-  color: #333;
+h1,
+h2 {
+  color: #2d4a3e;
   margin-bottom: 20px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-size: 1.4rem;
 }
 
 /* Buttons */
 button {
-  padding: 8px 14px;
+  padding: 9px 18px;
   margin: 5px;
   border: none;
-  border-radius: 4px;
+  border-radius: 5px;
   cursor: pointer;
+  font-size: 13px;
+  font-family: 'Palatino Linotype', 'Book Antiqua', Palatino, serif;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  transition: all 0.25s ease;
 }
 
 button:hover {
-  opacity: 0.9;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 /* Links */
 a {
   text-decoration: none;
-  color: #2196f3;
+  color: #c17817;
+  font-weight: 600;
 }
 
 a:hover {
+  color: #9a5f10;
   text-decoration: underline;
 }
 
@@ -42,11 +57,34 @@ table {
   margin-top: 20px;
 }
 
-table th, table td {
-  border: 1px solid #ddd;
+table th,
+table td {
+  border: 1px solid #d5cdbf;
   padding: 10px;
 }
 
 table th {
-  background-color: #f2f2f2;
+  background-color: #3c3c3c;
+  color: #f0ebe1;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+  .App {
+    padding: 12px;
+  }
+
+  h1 {
+    font-size: 1.3rem;
+  }
+
+  h2 {
+    font-size: 1.1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .App {
+    padding: 8px;
+  }
 }

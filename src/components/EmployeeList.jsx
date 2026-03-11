@@ -9,36 +9,39 @@ function EmployeeList() {
     const [searchDept, setSearchDept] = useState("");
     const navigate = useNavigate();
 
- // Fetch all employees
-useEffect(() => {
-  fetch(API_BASE_URL)
-    .then((res) => res.json())
-    .then((data) => setEmployees(Array.isArray(data) ? data : [data]))
-    .catch((err) => console.error(err));
-}, []);
+    // Fetch all employees
+    useEffect(() => {
+        fetch(API_BASE_URL)
+            .then((res) => res.json())
+            .then((data) => setEmployees(Array.isArray(data) ? data : [data]))
+            .catch((err) => console.error(err));
+    }, []);
 
-// Search by name
-const handleSearchByName = () => {
-  fetch(`${API_BASE_URL}/search/name?name=${searchName}`)
-    .then((res) => res.json())
-    .then((data) => setEmployees(Array.isArray(data) ? data : [data]))
-    .catch((err) => console.error(err));
-};
+    // Search by name
+    const handleSearchByName = () => {
+        fetch(`${API_BASE_URL}/search/name?name=${searchName}`)
+            .then((res) => res.json())
+            .then((data) => setEmployees(Array.isArray(data) ? data : [data]))
+            .catch((err) => console.error(err));
+    };
 
-// Search by department
-const handleSearchByDept = () => {
-  fetch(`${API_BASE_URL}/search/department?department=${searchDept}`)
-    .then((res) => res.json())
-    .then((data) => setEmployees(Array.isArray(data) ? data : [data]))
-    .catch((err) => console.error(err));
-};
+    // Search by department
+    const handleSearchByDept = () => {
+        const url = searchDept
+            ? `${API_BASE_URL}/search/department?department=${searchDept}`
+            : API_BASE_URL;
+        fetch(url)
+            .then((res) => res.json())
+            .then((data) => setEmployees(Array.isArray(data) ? data : [data]))
+            .catch((err) => console.error(err));
+    };
 
-// Delete employee
-const handleDelete = (id) => {
-  fetch(`${API_BASE_URL}/${id}`, { method: "DELETE" })
-    .then(() => setEmployees(employees.filter((emp) => emp.id !== id)))
-    .catch((err) => console.error(err));
-};
+    // Delete employee
+    const handleDelete = (id) => {
+        fetch(`${API_BASE_URL}/${id}`, { method: "DELETE" })
+            .then(() => setEmployees(employees.filter((emp) => emp.id !== id)))
+            .catch((err) => console.error(err));
+    };
 
     return (
         <div className="employee-list-container">
@@ -73,45 +76,47 @@ const handleDelete = (id) => {
 
             <h2>Employee Details</h2>
 
-            <table className="employee-table">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>Job Title</th>
-                        <th>Salary</th>
-                        <th>Department</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {employees.map((emp) => (
-                        <tr key={emp.id}>
-                            <td>{emp.id}</td>
-                            <td>{emp.name}</td>
-                            <td>{emp.email}</td>
-                            <td>{emp.jobTitle}</td>
-                            <td>{emp.salary}</td>
-                            <td>{emp.department}</td>
-                            <td>
-                                <button
-                                    className="update-btn"
-                                    onClick={() => navigate(`/edit/${emp.id}`)}
-                                >
-                                    Update
-                                </button>
-                                <button
-                                    className="delete-btn"
-                                    onClick={() => handleDelete(emp.id)}
-                                >
-                                    Delete
-                                </button>
-                            </td>
+            <div className="table-wrapper">
+                <table className="employee-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Job Title</th>
+                            <th>Salary</th>
+                            <th>Department</th>
+                            <th>Actions</th>
                         </tr>
-                    ))}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        {employees.map((emp) => (
+                            <tr key={emp.id}>
+                                <td data-label="ID">{emp.id}</td>
+                                <td data-label="Name">{emp.name}</td>
+                                <td data-label="Email">{emp.email}</td>
+                                <td data-label="Job Title">{emp.jobTitle}</td>
+                                <td data-label="Salary">{emp.salary}</td>
+                                <td data-label="Department">{emp.department}</td>
+                                <td>
+                                    <button
+                                        className="update-btn"
+                                        onClick={() => navigate(`/edit/${emp.id}`)}
+                                    >
+                                        Update
+                                    </button>
+                                    <button
+                                        className="delete-btn"
+                                        onClick={() => handleDelete(emp.id)}
+                                    >
+                                        Delete
+                                    </button>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
         </div>
     );
 }
