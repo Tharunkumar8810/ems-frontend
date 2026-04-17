@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import "../css/EditEmployee.css";
 import API_BASE_URL from "../config";
+import axios from "axios";
 
 function EditEmployee() {
   const { id } = useParams();
@@ -11,9 +12,8 @@ function EditEmployee() {
 
  // Fetch employee by ID
 useEffect(() => {
-  fetch(`${API_BASE_URL}/${id}`)
-    .then((res) => res.json())
-    .then((data) => setEmployee(data))
+  axios.get(`${API_BASE_URL}/${id}`)
+    .then((res) => setEmployee(res.data))
     .catch((err) => console.error(err));
 }, [id]);
 
@@ -26,13 +26,9 @@ useEffect(() => {
 // Update employee
 const handleSubmit = (e) => {
   e.preventDefault();
-  fetch(`${API_BASE_URL}/${id}`, {
-    method: "PUT",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(employee),
-  })
+  axios.put(`${API_BASE_URL}/${id}`, employee)
     .then((res) => {
-      if (res.ok) {
+      if (res.status >= 200 && res.status < 300) {
         setMessage("Employee updated successfully!");
       } else {
         setMessage("Failed to update employee.");

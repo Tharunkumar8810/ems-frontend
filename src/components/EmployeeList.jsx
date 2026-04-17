@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "../css/EmployeeList.css";
 import API_BASE_URL from "../config";
+import axios from "axios";
 
 function EmployeeList() {
     const [employees, setEmployees] = useState([]);
@@ -11,17 +12,15 @@ function EmployeeList() {
 
     // Fetch all employees
     useEffect(() => {
-        fetch(API_BASE_URL)
-            .then((res) => res.json())
-            .then((data) => setEmployees(Array.isArray(data) ? data : [data]))
+        axios.get(API_BASE_URL)
+            .then((res) => setEmployees(Array.isArray(res.data) ? res.data : [res.data]))
             .catch((err) => console.error(err));
     }, []);
 
     // Search by name
     const handleSearchByName = () => {
-        fetch(`${API_BASE_URL}/search/name?name=${searchName}`)
-            .then((res) => res.json())
-            .then((data) => setEmployees(Array.isArray(data) ? data : [data]))
+        axios.get(`${API_BASE_URL}/search/name?name=${searchName}`)
+            .then((res) => setEmployees(Array.isArray(res.data) ? res.data : [res.data]))
             .catch((err) => console.error(err));
     };
 
@@ -30,15 +29,14 @@ function EmployeeList() {
         const url = searchDept
             ? `${API_BASE_URL}/search/department?department=${searchDept}`
             : API_BASE_URL;
-        fetch(url)
-            .then((res) => res.json())
-            .then((data) => setEmployees(Array.isArray(data) ? data : [data]))
+        axios.get(url)
+            .then((res) => setEmployees(Array.isArray(res.data) ? res.data : [res.data]))
             .catch((err) => console.error(err));
     };
 
     // Delete employee
     const handleDelete = (id) => {
-        fetch(`${API_BASE_URL}/${id}`, { method: "DELETE" })
+        axios.delete(`${API_BASE_URL}/${id}`)
             .then(() => setEmployees(employees.filter((emp) => emp.id !== id)))
             .catch((err) => console.error(err));
     };

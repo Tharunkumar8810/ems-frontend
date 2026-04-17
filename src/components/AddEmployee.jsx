@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../css/AddEmployee.css";
 import API_BASE_URL from "../config";
+import axios from "axios";
 
 function AddEmployee() {
   const [employee, setEmployee] = useState({
@@ -20,13 +21,9 @@ function AddEmployee() {
 
 const handleSubmit = (e) => {
   e.preventDefault();
-  fetch(API_BASE_URL, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(employee),
-  })
+  axios.post(API_BASE_URL, employee)
     .then((res) => {
-      if (res.ok) {
+      if (res.status >= 200 && res.status < 300) {
         setMessage("Employee added successfully!");
         setEmployee({ name: "", email: "", jobTitle: "", salary: "", department: "" });
       } else {
